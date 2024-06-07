@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>BlackJack</h1>
+    <div>
+        <label for="codiPartida">Codi Partida:</label>
+        <input type="text" id="codiPartida">
+    </div>
+    <button onclick="iniciarJoc()">Iniciar Partida</button>
+    <button onclick="obtenerCarta()">Obtener Carta Inicial</button>
+    <button onclick="pedirCarta()">Pedir Carta</button>
+    <button onclick="plantarse()">Plantarse</button>
+
+    <h2>Cartes del Jugador</h2>
+    <div id="cartasJugador"></div>
+    <h2>Cartes del Crupier</h2>
+    <div id="cartasGrupier"></div>
+    <h2>Resultat</h2>
+    <div id="resultado"></div>
+
+    <script>
+        const baseUrl = 'http://localhost:3000';
+
+        function iniciarJoc() {
+            const codiPartida = document.getElementById('codiPartida').value;
+            fetch(`${baseUrl}/iniciarJoc/${codiPartida}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.mensaje);
+            });
+        }
+
+        function obtenerCarta() {
+            const codiPartida = document.getElementById('codiPartida').value;
+            fetch(`${baseUrl}/obtenerCarta/${codiPartida}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('cartasJugador').innerText = JSON.stringify(data.cartasJugador);
+                document.getElementById('cartasGrupier').innerText = JSON.stringify(data.cartasGrupier);
+            });
+        }
+
+        function pedirCarta() {
+            const codiPartida = document.getElementById('codiPartida').value;
+            fetch(`${baseUrl}/pedirCarta/${codiPartida}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('cartasJugador').innerText = JSON.stringify(data.cartasJugador);
+            });
+        }
+
+        function plantarse() {
+            const codiPartida = document.getElementById('codiPartida').value;
+            fetch(`${baseUrl}/plantarse/${codiPartida}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('cartasJugador').innerText = JSON.stringify(data.cartasJugador);
+                document.getElementById('cartasGrupier').innerText = JSON.stringify(data.cartasGrupier);
+                document.getElementById('resultado').innerText = data.resultado;
+            });
+        }
+    </script>
+</body>
+</html>
